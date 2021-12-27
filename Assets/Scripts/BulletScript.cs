@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    public BaseGunWeapon Weapon;//자신을 발사한 총의 스크립트
+    //public BaseGunWeapon Weapon;//자신을 발사한 총의 스크립트
 
 
 
@@ -20,7 +20,7 @@ public class BulletScript : MonoBehaviour
         {
             if(other.tag=="Enemy")
             {
-                other.GetComponent<EnemyMove>().EnemyHit(Weapon.Damage); 
+                //other.GetComponent<EnemyMove>().EnemyHit(Weapon.Damage); 
             }
             Destroy(this.gameObject);
         }

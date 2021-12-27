@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class BaseGunWeapon : MonoBehaviour
 {
-    public float BulletForce;
-    public float CoolTime;
-    protected float LastShootTime;
-    public Transform barrel;
-    public GameObject Bullet;
-    public BaseGunWeapon weaponroot;
-    public int Damage;
-    public PlayerMove sc_Player;
+    
 
 
 
