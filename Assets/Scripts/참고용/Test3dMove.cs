@@ -360,8 +360,9 @@ public class Test3dMove : MonoBehaviour
             if (!State.isCursorActive)
             {
                 RotateTP();
+                RotateFP();
             }
-            RotateFPRoot();
+            //RotateFPRoot();
         }
     }
 
@@ -446,7 +447,7 @@ public class Test3dMove : MonoBehaviour
 
     private void Move()
     {
-        if (isOnSteepSlope || isForwardBlocked) 
+        if (isForwardBlocked) 
         {
             ////안움직이고 있을때는 y값 고정
             //Com.rBody.velocity = new Vector3(0f, Com.rBody.velocity.y, 0f);

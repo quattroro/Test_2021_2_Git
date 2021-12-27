@@ -4,7 +4,31 @@ using UnityEngine;
 
 public class GunScript : BaseGunWeapon
 {
+    public enum GunType { PISTOL, RIFLE, SHOTGUN, GRENADE };
+
+    public Transform Barrel;
     
+
+
+
+    [System.Serializable]
+    public class GunOption
+    {
+        public GunType type;
+        public float CoolDown;
+        public float MaxRange;
+        public float OneClipBulletNum;
+        public float Damage;
+        public float MaxShot;
+
+
+    }
+
+
+    public void InitSetting()
+    {
+
+    }
 
     public void ShotBullet()
     {
