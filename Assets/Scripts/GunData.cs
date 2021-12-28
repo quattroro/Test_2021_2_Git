@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Gun Data", menuName = "New Scriptable Object/Gun Data", order = int.MaxValue)]
 public class GunData : ScriptableObject
 {
-    public enum GunType { PISTOL, RIFLE, SHOTGUN, GRENADE };
+    public enum GunType { Pistol, Rifle, Shotgun, Grenade };
 
     public string GunName;
     public GunType type;
@@ -21,7 +21,6 @@ public class GunData : ScriptableObject
     public float MaxShot;
     [Range(0.0f, 1f), Tooltip("Åº Á¤È®µµ")]
     public float Variation;
-
     [Range(1.0f, 100.0f), Tooltip("ÅºÂø±º Å©±â ¹ÝÁö¸§")]
     public float VariationRadius;
 

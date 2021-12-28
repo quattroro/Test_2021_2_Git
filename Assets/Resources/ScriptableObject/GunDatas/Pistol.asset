@@ -15,8 +15,9 @@ MonoBehaviour:
   GunName: Pistol
   type: 0
   CoolDown: 1
-  MaxRange: -1
+  MaxRange: 1000
   OneClipBulletNum: 7
   Damage: 10
   MaxShot: 1
   Variation: 1
+  VariationRadius: 1

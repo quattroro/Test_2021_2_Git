@@ -20,3 +20,4 @@ MonoBehaviour:
   Damage: 5
   MaxShot: 7
   Variation: 0.2
+  VariationRadius: 10

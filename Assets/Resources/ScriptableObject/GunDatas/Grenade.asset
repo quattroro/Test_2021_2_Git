@@ -15,8 +15,9 @@ MonoBehaviour:
   GunName: Grenade
   type: 3
   CoolDown: 1
-  MaxRange: -1
+  MaxRange: 1000
   OneClipBulletNum: 1
   Damage: 100
   MaxShot: 1
   Variation: 1
+  VariationRadius: 30

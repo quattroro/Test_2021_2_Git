@@ -166,6 +166,8 @@ public class Test3dMove : MonoBehaviour
 
     public float maxSlopeAngle;
 
+    //public Camera NowCamera;
+
     private void Awake()
     {
         InitComponents();

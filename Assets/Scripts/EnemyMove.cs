@@ -14,8 +14,17 @@ public class EnemyMove : MonoBehaviour
     public float MaxHP;
     public float CurHP;
     public Image HPBar;
-    public PlayerMove sc_player;
+    public Test3dMove sc_player;
+    public bool NowAttacking;
 
+    public Vector3 Movedirection;
+
+
+    public Vector3[] direction = new Vector3[8] {
+        new Vector3(1,0,0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1), new Vector3(1, 0, 1), new Vector3(1, 0, -1), new Vector3(-1, 0, 1), new Vector3(-1, 0, -1), };
+
+
+    public GunScript enemygun;
     enum STATE { IDLE, WALK };
 
     public float HP
@@ -32,7 +41,7 @@ public class EnemyMove : MonoBehaviour
     }
 
 
-    public void IsDetect(PlayerMove player)
+    public void IsDetect(Test3dMove player)
     {
         if(player==null)
         {
@@ -80,6 +89,8 @@ public class EnemyMove : MonoBehaviour
         //StartCoroutine
     }
 
+
+    //총알 한발씩 발사
     IEnumerator attack()
     {
         while(true)
@@ -127,18 +138,35 @@ public class EnemyMove : MonoBehaviour
         {
             if(IsDetect())
             {
-
-
+                if(!NowAttacking)
+                {
+                    navagent.SetDestination(sc_player.transform.position);
+                    if (!navagent.pathPending)
+                    {
+                        if (navagent.remainingDistance <= navagent.stoppingDistance)
+                        {
+                            if (!navagent.hasPath || navagent.velocity.sqrMagnitude == 0)
+                            {
+                                NowAttacking = true;
+                                StartCoroutine("attack");
+                            }
+                        }
+                    }
+                }
 
                 yield return new WaitForSeconds(1f);
             }
             else
             {
+                //움직일 방향
+                int rnd = Random.Range(0, 8);
+                Movedirection = direction[rnd];
+                //움직일 거리
+                int Distance = Random.Range(5, 20);
 
+                Movedirection *= Distance;
 
-
-
-
+                navagent.SetDestination(this.transform.position + Movedirection);
 
                 yield return new WaitForSeconds(2f);
             }
@@ -162,8 +190,7 @@ public class EnemyMove : MonoBehaviour
                 if (h.transform.tag == "Player")
                 {
 
-                    PlayerMove temp = h.transform.GetComponent<PlayerMove>();
-
+                    Test3dMove temp = h.transform.GetComponent<Test3dMove>();
 
                     RaycastHit hit2;
                     Vector3 dir = temp.transform.position - this.transform.position;
@@ -175,16 +202,16 @@ public class EnemyMove : MonoBehaviour
                         Debug.Log("detect player");
                         IsDetect(temp);
                         //NavMove(h.transform.position);
-                        targetpos = h.transform.position;
+                        //targetpos = h.transform.position;
                     }
                     
                 }
             }
         }
-        else
-        {
-            navagent.SetDestination(sc_player.transform.position);
-        }
+        //else
+        //{
+        //    navagent.SetDestination(sc_player.transform.position);
+        //}
 
         //if(IsDetect==true)
         //{
@@ -193,10 +220,10 @@ public class EnemyMove : MonoBehaviour
     }
 
     
-    public void EnemyHit(int damage)
+    public void EnemyHit(Test3dMove player, int damage)
     {
         Debug.Log($"monster{name}데미지 {damage}입음");
-
+        IsDetect(player);
         HP = HP - damage;
     }
 
@@ -206,6 +233,9 @@ public class EnemyMove : MonoBehaviour
     {
         navagent = GetComponent<NavMeshAgent>();
         HPBar.transform.localScale = new Vector3(CurHP / MaxHP, 1, 1);
+        StartCoroutine("NavMove");
+        enemygun = GetComponentInChildren<GunScript>();
+        enemygun.InitSetting(GunData.GunType.Rifle);
         //range = GetComponent<SphereCollider>();
     }
 
