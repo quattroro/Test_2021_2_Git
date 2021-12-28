@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class EnemyMove : MonoBehaviour
 {
     NavMeshAgent navagent;
-    public SphereCollider range;
+    public SphereCollider detectrange;
+    public float detectRadius;
     public Vector3 targetpos;
     public Vector3 RanMove;
     public bool PlayerDetected;
@@ -18,6 +19,9 @@ public class EnemyMove : MonoBehaviour
     public bool NowAttacking;
 
     public Vector3 Movedirection;
+
+    
+
 
 
     public Vector3[] direction = new Vector3[8] {
@@ -35,8 +39,8 @@ public class EnemyMove : MonoBehaviour
         }
         set
         {
-            CurHP = CurHP - value;
-            HPBar.transform.localScale = new Vector3(MaxHP / CurHP, 1, 1);
+            CurHP = value;
+            HPBar.transform.localScale = new Vector3(CurHP / MaxHP, 1, 1);
         }
     }
 
@@ -97,19 +101,19 @@ public class EnemyMove : MonoBehaviour
         {
             if (IsDetect())
             {
-
+                if(!enemygun.NowFiring)
+                {
+                    enemygun.NowFiring = true;
+                    yield return new WaitForSeconds(0.5f);
+                }
+                enemygun.NowFiring = false;
+                yield return new WaitForSeconds(3.0f);
             }
             else
             {
                 yield break;
             }
         }
-    }
-
-
-    public void Attack()
-    {
-
     }
 
 
@@ -153,7 +157,6 @@ public class EnemyMove : MonoBehaviour
                         }
                     }
                 }
-
                 yield return new WaitForSeconds(1f);
             }
             else
@@ -184,7 +187,7 @@ public class EnemyMove : MonoBehaviour
     {
         if(sc_player==null)
         {
-            RaycastHit[] hit = Physics.SphereCastAll(range.transform.position, range.radius, new Vector3(0, 1, 0), 0);
+            RaycastHit[] hit = Physics.SphereCastAll(this.transform.position, detectRadius, new Vector3(0, 1, 0), 0);
             foreach (RaycastHit h in hit)
             {
                 if (h.transform.tag == "Player")
@@ -226,16 +229,31 @@ public class EnemyMove : MonoBehaviour
         IsDetect(player);
         HP = HP - damage;
     }
-
+    public void EnemyHit(int damage)
+    {
+        Debug.Log($"monster{name}데미지 {damage}입음");
+        //IsDetect(player);
+        HP = HP - damage;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        detectrange = GetComponentInChildren<SphereCollider>();
+        
+        detectRadius = detectrange.radius;
+        detectrange.gameObject.SetActive(false);//충돌검사에 방해되기 때문에 필요한 정보만 얻고 비활성화 시킨다.
+
+
         navagent = GetComponent<NavMeshAgent>();
+        
         HPBar.transform.localScale = new Vector3(CurHP / MaxHP, 1, 1);
         StartCoroutine("NavMove");
+
         enemygun = GetComponentInChildren<GunScript>();
-        enemygun.InitSetting(GunData.GunType.Rifle);
+        enemygun.IsPlayer = false;
+        enemygun.LoadGunData(GunData.GunType.Rifle);
+        
         //range = GetComponent<SphereCollider>();
     }
 

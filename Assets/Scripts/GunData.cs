@@ -23,5 +23,7 @@ public class GunData : ScriptableObject
     public float Variation;
     [Range(1.0f, 100.0f), Tooltip("탄착군 크기 반지름")]
     public float VariationRadius;
+    //[Tooltip("플레이어인지 아닌지")]
+    //public bool IsPlayer;
 
 }

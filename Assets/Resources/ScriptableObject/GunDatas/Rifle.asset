@@ -21,3 +21,4 @@ MonoBehaviour:
   MaxShot: 1
   Variation: 0.7
   VariationRadius: 30
+  IsPlayer: 1

@@ -168,6 +168,26 @@ public class Test3dMove : MonoBehaviour
 
     //public Camera NowCamera;
 
+    public GunScript playerGun;
+
+    public float MaxHP;
+
+    public float CurHP;
+
+    public float HP
+    {
+        get
+        {
+            return CurHP;
+        }
+        set
+        {
+            CurHP = value;
+            UIManager.instance.UpdataHP(CurHP / MaxHP);
+            //HPBar.transform.localScale = new Vector3(MaxHP / CurHP, 1, 1);
+        }
+    }
+
     private void Awake()
     {
         InitComponents();
@@ -181,6 +201,13 @@ public class Test3dMove : MonoBehaviour
         LogNotInitializedComponentError(Com.fpCamera, "FP Camera");
         TryGetComponent(out Com.rBody);
         TryGetComponent(out capsule);
+
+        MaxHP = 200;
+        HP = MaxHP;
+
+        playerGun = GetComponentInChildren<GunScript>();
+        playerGun.IsPlayer = true;
+        playerGun.LoadGunData(GunData.GunType.Pistol);
         //Com.animator = GetComponent<Animator>();
         Com.anim = GetComponentInChildren<Animator>();
 
@@ -193,7 +220,15 @@ public class Test3dMove : MonoBehaviour
     }
 
 
-
+    public void PlayerHit(int damage)
+    {
+        HP = HP - damage;
+        if(HP<=0)
+        {
+            //게임오버
+            
+        }
+    }
 
     private void InitSettings()
     {
@@ -211,6 +246,7 @@ public class Test3dMove : MonoBehaviour
         State.isCurrentFp = (CamOption.initialCamera == CameraType.FPCamera);
         Com.fpCamObject.SetActive(State.isCurrentFp);
         Com.tpCamObject.SetActive(!State.isCurrentFp);
+
 
 
         //CapsuleCollider cCol = GetComponent<CapsuleCollider>();
