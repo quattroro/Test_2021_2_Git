@@ -190,8 +190,7 @@ public class Test3dMove : MonoBehaviour
 
     private void Awake()
     {
-        InitComponents();
-        InitSettings();
+        
     }
 
 
@@ -202,12 +201,10 @@ public class Test3dMove : MonoBehaviour
         TryGetComponent(out Com.rBody);
         TryGetComponent(out capsule);
 
-        MaxHP = 200;
-        HP = MaxHP;
-
+        
         playerGun = GetComponentInChildren<GunScript>();
         playerGun.IsPlayer = true;
-        playerGun.LoadGunData(GunData.GunType.Pistol);
+        
         //Com.animator = GetComponent<Animator>();
         Com.anim = GetComponentInChildren<Animator>();
 
@@ -217,6 +214,12 @@ public class Test3dMove : MonoBehaviour
         Com.fpCamObject = Com.fpCamera.gameObject;
         Com.fpRig = Com.fpCamera.transform.parent;
         Com.fpRoot = Com.fpRig.parent;
+
+
+        playerGun.LoadGunData(GunData.GunType.Pistol);
+        MaxHP = 200;
+        HP = MaxHP;
+
     }
 
 
@@ -546,7 +549,8 @@ public class Test3dMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        InitComponents();
+        InitSettings();
     }
 
     // Update is called once per frame

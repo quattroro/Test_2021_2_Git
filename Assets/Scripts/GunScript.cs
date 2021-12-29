@@ -88,6 +88,7 @@ public class GunScript : BaseGunWeapon
             if (Input.GetMouseButtonUp(0))
             {
                 NowFiring = false;
+                GunFireParticle.gameObject.SetActive(false);
             }
             if(Input.GetKeyDown(KeyCode.G))
             {

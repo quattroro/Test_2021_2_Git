@@ -228,12 +228,31 @@ public class EnemyMove : MonoBehaviour
         Debug.Log($"monster{name}데미지 {damage}입음");
         IsDetect(player);
         HP = HP - damage;
+        if (HP <= 0)
+        {
+            GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Item"));
+            obj.transform.position = this.transform.position;
+            int rnd = Random.Range(0, (int)GunData.GunType.Grenade + 1);
+            obj.GetComponent<ItemScript>().ItemSet((GunData.GunType)rnd);
+            
+            Destroy(this.gameObject);
+        }
+
     }
     public void EnemyHit(int damage)
     {
         Debug.Log($"monster{name}데미지 {damage}입음");
         //IsDetect(player);
         HP = HP - damage;
+        if (HP <= 0)
+        {
+            GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Item"));
+            obj.transform.position = this.transform.position;
+            int rnd = Random.Range(0, (int)GunData.GunType.Grenade + 1);
+            obj.GetComponent<ItemScript>().ItemSet((GunData.GunType)rnd);
+
+            Destroy(this.gameObject);
+        }
     }
 
     // Start is called before the first frame update

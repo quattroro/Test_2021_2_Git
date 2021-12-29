@@ -7,6 +7,17 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
 
+    //public static UIManager Instance
+    //{
+    //    get
+    //    {
+    //        if(instance==null)
+    //        {
+    //            instance = this;
+    //        }
+    //        return instance;
+    //    }
+    //}
 
     public GameObject HPbar;
 
@@ -42,13 +53,15 @@ public class UIManager : MonoBehaviour
     {
         if (instance == null)
         {
+            Debug.Log("create");
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
             if(instance!=this)
             {
+                Debug.Log("destroy");
                 Destroy(this.gameObject);
             }
         }
