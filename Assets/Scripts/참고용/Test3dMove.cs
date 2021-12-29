@@ -216,7 +216,7 @@ public class Test3dMove : MonoBehaviour
         Com.fpRoot = Com.fpRig.parent;
 
 
-        playerGun.LoadGunData(GunData.GunType.Pistol);
+        playerGun.LoadGunData(GunData.GunType.Rifle);
         MaxHP = 200;
         HP = MaxHP;
 
@@ -329,22 +329,6 @@ public class Test3dMove : MonoBehaviour
 
 
 
-
-    //점프 하기 전에 땅에 붙어있는지 확인하고 isGrounded 변수를 초기화 해주는 함수
-    //private void CheckDistanceFromGround()
-    //{
-    //    Vector3 ro = transform.position + Vector3.up;
-    //    Vector3 rd = Vector3.down;
-    //    Ray ray = new Ray(ro, rd);
-
-    //    const float rayDist = 500f;
-    //    const float threshold = 0.01f;
-
-    //    bool cast = Physics.SphereCast(ray, _groundCheckRadius, out var hit, rayDist, MoveOption.groundLayerMask);
-
-    //    _distFromGround = cast ? (hit.distance - 1f + _groundCheckRadius) : float.MaxValue;
-    //    State.isGrounded = _distFromGround <= _groundCheckRadius + threshold;
-    //}
 
     private void Jump()
     {

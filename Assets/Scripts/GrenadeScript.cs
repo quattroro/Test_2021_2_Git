@@ -45,7 +45,7 @@ public class GrenadeScript : MonoBehaviour
 
             }
         }
-        Destroy(this.gameObject, 2f);
+        Destroy(this.gameObject, 1f);
     }
 
     // Start is called before the first frame update

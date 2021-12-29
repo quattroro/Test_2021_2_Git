@@ -248,7 +248,7 @@ public class EnemyMove : MonoBehaviour
         {
             GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Item"));
             obj.transform.position = this.transform.position;
-            int rnd = Random.Range(0, (int)GunData.GunType.Grenade + 1);
+            int rnd = Random.Range(0, (int)GunData.GunType.Grenade);
             obj.GetComponent<ItemScript>().ItemSet((GunData.GunType)rnd);
 
             Destroy(this.gameObject);

@@ -100,7 +100,14 @@ public class GunScript : BaseGunWeapon
 
     public void ThrowGrenade()
     {
-
+        GrenadeNum = GrenadeNum - 1;
+        if(GrenadeNum<=0)
+        {
+            return;
+        }
+        GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Grenade"));
+        obj.transform.position = Barrel.position;
+        obj.GetComponent<Rigidbody>().AddForce((Barrel.forward + Vector3.up) * 400f);
     }
 
     public void UpdateUI()

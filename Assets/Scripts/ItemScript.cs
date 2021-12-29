@@ -24,12 +24,12 @@ public class ItemScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GunData.GunType temptype;
+        //GunData.GunType temptype;
         if (other.tag=="Player")
         {
             Debug.Log($"아이템 플레이어 충돌{ItemType.ToString()}");
-            temptype = other.GetComponent<Test3dMove>().playerGun.gundata.type;
-            other.GetComponent<Test3dMove>().playerGun.LoadGunData(temptype);
+            //temptype = other.GetComponent<Test3dMove>().playerGun.gundata.type;
+            other.GetComponent<Test3dMove>().playerGun.LoadGunData(ItemType);
             Destroy(this.gameObject);
         }
     }
