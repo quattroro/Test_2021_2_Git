@@ -36,6 +36,7 @@ public class Character2DMove : MonoBehaviour
         public LayerMask GroundMask;
         public LayerMask UsableMask;
         public LayerMask MoveableMask;
+        public LayerMask LadderMask;
 
         public float DashForce;
 
@@ -214,20 +215,42 @@ public class Character2DMove : MonoBehaviour
         Vector3 input = new Vector3(h, v, 0);
         current.InputDirection = Vector3.Lerp(current.InputDirection, input, 0.1f);
         State.IsMove = current.InputDirection.magnitude >= 0.01f;
-        
+
 
         //if (Input.GetKey(keyoption.Jump))
         //위와 아래는 해당 캐릭터의 위치가 사다리 위일때만 적용
         //
+
         if (Input.GetKey(keyoption.UpMove))
         {
-
+            if(IsOnLadder())
+            {
+                Debug.Log("사다리 감지");
+            }
         }
         if (Input.GetKey(keyoption.DownMove))
         {
-
+            if (IsOnLadder())
+            {
+                Debug.Log("사다리 감지");
+            }
         }
-        
+    }
+
+    //메인 카메라에서 캐릭터의 위치로 레이를 발사 
+    public bool IsOnLadder()
+    {
+        //Vector3 direction= 
+        Ray ray;
+        Vector2 campos = Camera.main.WorldToScreenPoint(this.transform.position);
+        ray = Camera.main.ScreenPointToRay(campos);
+
+        //Ray ray = new Ray(this.transform.position, new Vector3(0, 0, 1));
+        Debug.DrawRay(ray.origin, ray.direction);
+        bool flag= Physics.Raycast(ray, 2, moveoption.LadderMask);
+        Debug.Log($"{flag}");
+        return flag;
+
     }
 
     //outofcontrol 상태인지(해당 상태일때는 한번 땅에 떨어지기 전까지는 계속 유지), 떨어지고 있는 상태인지(해당상태에서는 움직이는게 가능, 점프는 불가능),
@@ -250,9 +273,6 @@ public class Character2DMove : MonoBehaviour
             Com.rBody.velocity = new Vector2(0f, Com.rBody.velocity.y);
             //Com.rBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
-
-        //점프
-
 
         //좌우이동
         if (current.GroundDegree > 0 && State.IsGrounded)
@@ -280,7 +300,7 @@ public class Character2DMove : MonoBehaviour
         {
             if(State.IsGrounded)
             {
-                //Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+                Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
 
                 State.NowJumping = true;
                 current.JumpCount++;
@@ -290,7 +310,7 @@ public class Character2DMove : MonoBehaviour
             {
                 if(current.JumpCount<moveoption.MaxJump)
                 {
-                    //Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+                    Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
 
                     State.NowJumping = true;
                     current.JumpCount++;
