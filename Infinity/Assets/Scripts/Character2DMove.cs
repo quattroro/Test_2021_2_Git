@@ -29,8 +29,9 @@ public class Character2DMove : MonoBehaviour
         public float MaxDegree;
         [Range(1.0f, 1000.0f), Tooltip("점프 세기")]
         public float JumpForce;
-        [Range(1.0f, 1000.0f), Tooltip("점프 세기")]
-        public float GravityAccelate;
+
+        [Range(1.0f, 1000.0f), Tooltip("중력세기")]
+        public float Gravity;
 
         public LayerMask GroundMask;
         public LayerMask UsableMask;
@@ -89,7 +90,8 @@ public class Character2DMove : MonoBehaviour
         public Vector3 WorldDirection;
 
         public Vector2 Perp;
-        
+
+        public float gravity;//최종 움직임의 y축 값
 
     }
 
@@ -135,9 +137,10 @@ public class Character2DMove : MonoBehaviour
         State.IsGrounded = false;
         State.IsOnTheSlope = false;
         //State.IsOnMaxSlope=false;
+        Vector2 size = new Vector2(Com.capsule.size.x - 0.01f, Com.capsule.size.y);
         //부드러운 이동을 위해 중심과, 이동방향의 약간앞 두번의 검사를 한다.
-
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, Com.capsule.size.x / 2, Vector2.down, moveoption.GroundCheckDistanse, moveoption.GroundMask);
+        RaycastHit2D hit = Physics2D.BoxCast( transform.position, size, 0 , Vector2.down, moveoption.GroundCheckDistanse, moveoption.GroundMask);
+        //RaycastHit2D hit = Physics2D.CircleCast(transform.position, Com.capsule.size.x / 2, Vector2.down, moveoption.GroundCheckDistanse, moveoption.GroundMask);
         Debug.DrawLine(transform.position, hit.point, Color.red);
         if(hit)
         {
@@ -157,21 +160,32 @@ public class Character2DMove : MonoBehaviour
     
     public void CheckFoward()
     {
+        RaycastHit2D[] hit = new RaycastHit2D[3];
         State.ForwardBlocked = false;
 
-       
-        //RaycastHit2D hit = Physics2D.CapsuleCast(transform.position, Com.capsule.size, CapsuleDirection2D.Horizontal, 90f, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        Vector3 pos1 = new Vector3(transform.position.x, (transform.position.y + Com.capsule.size.y / 2) - 0.1f, transform.position.z);
+        Vector3 pos2 = new Vector3(transform.position.x, (transform.position.y - Com.capsule.size.y / 2) +  0.1f, transform.position.z);
+
+        // hit = Physics2D.CapsuleCast(transform.position, Com.capsule.size, CapsuleDirection2D.Horizontal, 0f, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        hit[0] = Physics2D.Raycast(transform.position, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        hit[1] = Physics2D.Raycast(pos1, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        hit[2] = Physics2D.Raycast(pos2, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
         Debug.DrawLine(transform.position, transform.position + (current.InputDirection * moveoption.FowardCheckDistanse), Color.blue);
-        if (hit)
+        Debug.DrawLine(pos1, pos1 + (current.InputDirection * moveoption.FowardCheckDistanse), Color.blue);
+        Debug.DrawLine(pos2, pos2 + (current.InputDirection * moveoption.FowardCheckDistanse), Color.blue);
+        foreach(var a in hit)
         {
-            current.FowardDegree = Vector2.Angle(hit.normal, Vector2.up);
-            if (current.FowardDegree >= moveoption.MaxDegree)
+            if (a)
             {
-                State.ForwardBlocked = true;
+                current.FowardDegree = Vector2.Angle(a.normal, Vector2.up);
+                if (current.FowardDegree >= moveoption.MaxDegree)
+                {
+                    State.ForwardBlocked = true;
+                }
+                //State.IsGrounded = true;
             }
-            //State.IsGrounded = true;
         }
+        
 
 
     }
@@ -226,7 +240,7 @@ public class Character2DMove : MonoBehaviour
             return;
         }
 
-        if (State.ForwardBlocked && !State.NowJumping)//앞이 막혀 있지만 점프중이 아닐때
+        if (State.ForwardBlocked /*&& !State.NowJumping*/)//앞이 막혀 있지만 점프중이 아닐때
         {
             return;
         }
@@ -247,7 +261,9 @@ public class Character2DMove : MonoBehaviour
         }
         else
         {
+
             Com.rBody.velocity = new Vector2(current.InputDirection.x * moveoption.Speed, Com.rBody.velocity.y);
+            //Com.rBody.velocity = new Vector2(current.InputDirection.x * moveoption.Speed, current.gravity);
         }
 
     }
@@ -264,7 +280,8 @@ public class Character2DMove : MonoBehaviour
         {
             if(State.IsGrounded)
             {
-                Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+                //Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+
                 State.NowJumping = true;
                 current.JumpCount++;
                 return;
@@ -273,7 +290,8 @@ public class Character2DMove : MonoBehaviour
             {
                 if(current.JumpCount<moveoption.MaxJump)
                 {
-                    Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+                    //Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+
                     State.NowJumping = true;
                     current.JumpCount++;
                     return;
@@ -286,6 +304,11 @@ public class Character2DMove : MonoBehaviour
 
     public void Falling()
     {
+        if (State.IsGrounded || State.OnLadder)
+        {
+            current.gravity = 0;
+
+        }
         if (State.IsGrounded && State.IsOutOfControl)//outofcontrol상태에서 바닥에 닿으면 해당 상태에서 벋어난다.
         {
             State.IsOutOfControl = false;
@@ -297,7 +320,11 @@ public class Character2DMove : MonoBehaviour
                 State.NowJumping = false;
                 current.JumpCount = 0;
             }
-            
+        }
+        if (!State.IsGrounded && !State.OnLadder)
+        {
+
+            //Com.rBody.velocity = new Vector2(Com.rBody.velocity.x, Com.rBody.velocity.y-=)
             
         }
 
