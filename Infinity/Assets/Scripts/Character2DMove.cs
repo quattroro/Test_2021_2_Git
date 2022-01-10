@@ -43,6 +43,21 @@ public class Character2DMove : MonoBehaviour
         [Range(1, 5), Tooltip("점프 횟수")]
         public int MaxJump;
 
+        [Range(0.0f,2.0f),Tooltip("점프 최대 차징 (최대 차징할수 있게 할 시간 )")]
+        public float MaxJumpCharge;
+        [Range(0.0f, 50.0f), Tooltip("점프로 이동할 최소 거리")]
+        public float MinJumpX;
+        [Range(0.0f, 50.0f), Tooltip("점프로 이동할 최대 거리")]
+        public float MaxJumpX;
+
+
+
+
+        //[Range(0.0f, 100.0f), Tooltip("점프 최대 차징")]
+        //public float ChargingSpeed;
+
+
+
         public float GroundCheckDistanse;
         public float FowardCheckDistanse;
 
@@ -77,6 +92,9 @@ public class Character2DMove : MonoBehaviour
 
         public bool IsMove;
 
+        public bool IsCharging;
+
+        public bool JumpTrigger;
     }
 
     [Serializable]
@@ -94,6 +112,9 @@ public class Character2DMove : MonoBehaviour
 
         public float gravity;//최종 움직임의 y축 값
 
+        public float ChargingStartTime;
+        public float ChargingEndTime;
+        public float CurJumpCharging;
     }
 
     [Serializable]
@@ -273,6 +294,13 @@ public class Character2DMove : MonoBehaviour
             Com.rBody.velocity = new Vector2(0f, Com.rBody.velocity.y);
             //Com.rBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
+        //점프
+        if(State.JumpTrigger)
+        {
+            State.JumpTrigger = false;
+
+        }
+
 
         //좌우이동
         if (current.GroundDegree > 0 && State.IsGrounded)
@@ -298,26 +326,58 @@ public class Character2DMove : MonoBehaviour
         
         if(Input.GetKeyDown(keyoption.Jump))
         {
-            if(State.IsGrounded)
+            if(!State.IsCharging)
             {
-                Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
 
-                State.NowJumping = true;
-                current.JumpCount++;
-                return;
+                State.IsCharging = true;
+                current.ChargingStartTime = Time.time;
             }
-            else
-            {
-                if(current.JumpCount<moveoption.MaxJump)
-                {
-                    Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+            //if(State.IsCharging)
+            //{
+                
 
-                    State.NowJumping = true;
-                    current.JumpCount++;
-                    return;
-                }
-            }
+
+            //}
+
+            //if(State.IsGrounded)
+            //{
+            //    Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+
+            //    State.NowJumping = true;
+            //    current.JumpCount++;
+            //    return;
+            //}
+            //else
+            //{
+            //    if(current.JumpCount<moveoption.MaxJump)
+            //    {
+            //        Com.rBody.AddForce(Vector2.up * moveoption.JumpForce);
+
+            //        State.NowJumping = true;
+            //        current.JumpCount++;
+            //        return;
+            //    }
+            //}
             
+        }
+        if(Input.GetKeyUp(keyoption.Jump))
+        {
+            if(State.IsCharging)
+            {
+                State.IsCharging = false;
+                current.ChargingEndTime = Time.time;
+                float time = current.ChargingEndTime - current.ChargingStartTime;
+                current.CurJumpCharging = Mathf.Floor(time * 100) * 0.01f;
+                if(current.CurJumpCharging >= moveoption.MaxJumpCharge)
+                {
+                    current.CurJumpCharging = moveoption.MaxJumpCharge;
+                }
+
+                State.JumpTrigger = true;
+
+                //Debug.Log($"{time}");
+                //Debug.Log($"{power}");
+            }
         }
         //Falling();
     }
