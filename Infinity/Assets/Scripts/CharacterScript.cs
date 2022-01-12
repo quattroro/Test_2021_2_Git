@@ -16,7 +16,10 @@ public class CharacterScript : MonoBehaviour
     {
         GameObject obj = GameObject.Instantiate(Characters[type]);
         obj.transform.parent = GameObject.Find("Player").transform;
-        obj.transform.localPosition = new Vector3(0f, 0f, 0);
+        obj.transform.localPosition = new Vector3(0f, -0.5050001f, 0);
+
+        GetComponent<Character2DMove>().InitSetting();
+
     }
 
     // Start is called before the first frame update

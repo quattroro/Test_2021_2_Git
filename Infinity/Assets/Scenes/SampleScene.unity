@@ -2467,7 +2467,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerAnimator: []
   PlayerSprite: []
-  Characters: []
+  Characters:
+  - {fileID: 8512489010371017068, guid: 2ab56fd13cc9ca348bb3a85bbe89f5db, type: 3}
+  - {fileID: 3143203555491034652, guid: 7fe5186381e62ed4cb5ecfb6827bc071, type: 3}
 --- !u!1 &2028362430
 GameObject:
   m_ObjectHideFlags: 0
