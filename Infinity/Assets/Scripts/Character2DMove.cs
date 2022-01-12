@@ -18,6 +18,7 @@ public class Character2DMove : MonoBehaviour
     {
         public Rigidbody2D rBody;
         public CapsuleCollider2D capsule;
+        public Animator animator;
     }
 
     [Serializable]
@@ -44,13 +45,17 @@ public class Character2DMove : MonoBehaviour
         public int MaxJump;
 
         [Range(0.0f,2.0f),Tooltip("점프 최대 차징 (최대 차징할수 있게 할 시간 )")]
-        public float MaxJumpCharge;
-        [Range(0.0f, 50.0f), Tooltip("점프로 이동할 최소 거리")]
-        public float MinJumpX;
-        [Range(0.0f, 50.0f), Tooltip("점프로 이동할 최대 거리")]
-        public float MaxJumpX;
+        public float MaxJumpChargeSecond;
+        [Range(0.0f, 90.0f), Tooltip("점프로 이동할 최소 거리")]
+        public float MinJumpDegree;
+        [Range(0.0f, 90.0f), Tooltip("점프로 이동할 최대 거리")]
+        public float MaxJumpDegree;
+        [Range(0.0f, 500.0f), Tooltip("점프로 이동할 최소 거리")]
+        public float MinJumpForce;
+        [Range(0.0f, 500.0f), Tooltip("점프로 이동할 최대 거리")]
+        public float MaxJumpForce;
 
-
+        //public float Gravity;
 
 
         //[Range(0.0f, 100.0f), Tooltip("점프 최대 차징")]
@@ -115,6 +120,10 @@ public class Character2DMove : MonoBehaviour
         public float ChargingStartTime;
         public float ChargingEndTime;
         public float CurJumpCharging;
+
+        public float CurJumpDegree;
+
+        public float KnockbackTime;
     }
 
     [Serializable]
@@ -138,11 +147,13 @@ public class Character2DMove : MonoBehaviour
     [SerializeField]
     public CurrentState State = new CurrentState();
 
-
+    bool flag = false;
     public void InitSetting()
     {
         TryGetComponent(out Com.rBody);
         TryGetComponent(out Com.capsule);
+        Com.animator = GetComponentInChildren<Animator>();
+
         Com.rBody.freezeRotation = true;
         moveoption.GroundCheckDistanse = Com.capsule.size.y / 2 + 0.1f;
         //Physics.gravity
@@ -159,7 +170,7 @@ public class Character2DMove : MonoBehaviour
         State.IsGrounded = false;
         State.IsOnTheSlope = false;
         //State.IsOnMaxSlope=false;
-        Vector2 size = new Vector2(Com.capsule.size.x - 0.01f, Com.capsule.size.y);
+        Vector2 size = new Vector2(Com.capsule.size.x - 0.02f, Com.capsule.size.y - 0.42f);
         //부드러운 이동을 위해 중심과, 이동방향의 약간앞 두번의 검사를 한다.
         RaycastHit2D hit = Physics2D.BoxCast( transform.position, size, 0 , Vector2.down, moveoption.GroundCheckDistanse, moveoption.GroundMask);
         //RaycastHit2D hit = Physics2D.CircleCast(transform.position, Com.capsule.size.x / 2, Vector2.down, moveoption.GroundCheckDistanse, moveoption.GroundMask);
@@ -173,13 +184,38 @@ public class Character2DMove : MonoBehaviour
             {
                 State.IsOnTheSlope = true;
             }
+            
 
             State.IsGrounded = true;
         }
 
     }
 
-    
+    //사다리를 올라가는 중이 아닐때 
+    public void LadderCheck()
+    {
+        if(!State.OnLadder)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, moveoption.GroundCheckDistanse, moveoption.LadderMask);
+
+            if (hit)
+            {
+                State.IsGrounded = true;
+            }
+        }
+    }
+
+    public void KnockBack(Vector2 force, float time)
+    {
+        //Debug.Log("넉백들어옴");
+        current.KnockbackTime = Time.time + time;
+        State.IsOutOfControl = true;
+
+        Com.animator.SetBool("AniOutOfControl", true);
+        Com.rBody.AddForce(force);
+
+    }
+
     public void CheckFoward()
     {
         RaycastHit2D[] hit = new RaycastHit2D[3];
@@ -189,9 +225,16 @@ public class Character2DMove : MonoBehaviour
         Vector3 pos2 = new Vector3(transform.position.x, (transform.position.y - Com.capsule.size.y / 2) +  0.1f, transform.position.z);
 
         // hit = Physics2D.CapsuleCast(transform.position, Com.capsule.size, CapsuleDirection2D.Horizontal, 0f, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
-        hit[0] = Physics2D.Raycast(transform.position, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
-        hit[1] = Physics2D.Raycast(pos1, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
-        hit[2] = Physics2D.Raycast(pos2, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        Vector2 direction = (State.IsLeft) ? new Vector2(-1, 0) : new Vector2(1, 0);
+
+        //hit[0] = Physics2D.Raycast(transform.position, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        //hit[1] = Physics2D.Raycast(pos1, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        //hit[2] = Physics2D.Raycast(pos2, current.InputDirection, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+
+        hit[0] = Physics2D.Raycast(transform.position, direction, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        hit[1] = Physics2D.Raycast(pos1, direction, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+        hit[2] = Physics2D.Raycast(pos2, direction, moveoption.FowardCheckDistanse, moveoption.GroundMask);
+
         Debug.DrawLine(transform.position, transform.position + (current.InputDirection * moveoption.FowardCheckDistanse), Color.blue);
         Debug.DrawLine(pos1, pos1 + (current.InputDirection * moveoption.FowardCheckDistanse), Color.blue);
         Debug.DrawLine(pos2, pos2 + (current.InputDirection * moveoption.FowardCheckDistanse), Color.blue);
@@ -216,6 +259,11 @@ public class Character2DMove : MonoBehaviour
     {
         float v = 0f;
         float h = 0f;
+        if(!IsOnLadder())
+        {
+            State.OnLadder = false;
+            Com.animator.SetBool("AniOnLadder", false);
+        }
 
         if (Input.GetKey(keyoption.RightMove))
         {
@@ -229,6 +277,29 @@ public class Character2DMove : MonoBehaviour
             State.IsLeft = true;
         }
 
+        if (Input.GetKey(keyoption.UpMove))
+        {
+            if (IsOnLadder())
+            {
+                State.OnLadder = true;
+                Com.animator.SetBool("AniOnLadder", true);
+                Debug.Log("사다리 감지");
+                v = 1.0f;
+                //current.InputDirection = Vector3.Lerp(current.InputDirection, input, 0.1f);
+            }
+
+        }
+        if (Input.GetKey(keyoption.DownMove))
+        {
+            if (IsOnLadder())
+            {
+                State.OnLadder = true;
+                Com.animator.SetBool("AniOnLadder", true);
+                Debug.Log("사다리 감지");
+                v = -1.0f;
+            }
+        }
+
         //State.IsLeft = h < 0;
         float rotate = State.IsLeft ? 0 : 180;
         this.transform.rotation = Quaternion.Euler(new Vector3(0, rotate, 0));
@@ -236,26 +307,14 @@ public class Character2DMove : MonoBehaviour
         Vector3 input = new Vector3(h, v, 0);
         current.InputDirection = Vector3.Lerp(current.InputDirection, input, 0.1f);
         State.IsMove = current.InputDirection.magnitude >= 0.01f;
-
+        bool b = State.IsMove ? true : false;
+        Com.animator.SetBool("AniRun", b);
 
         //if (Input.GetKey(keyoption.Jump))
         //위와 아래는 해당 캐릭터의 위치가 사다리 위일때만 적용
         //
 
-        if (Input.GetKey(keyoption.UpMove))
-        {
-            if(IsOnLadder())
-            {
-                Debug.Log("사다리 감지");
-            }
-        }
-        if (Input.GetKey(keyoption.DownMove))
-        {
-            if (IsOnLadder())
-            {
-                Debug.Log("사다리 감지");
-            }
-        }
+
     }
 
     //메인 카메라에서 캐릭터의 위치로 레이를 발사 
@@ -268,8 +327,8 @@ public class Character2DMove : MonoBehaviour
 
         //Ray ray = new Ray(this.transform.position, new Vector3(0, 0, 1));
         Debug.DrawRay(ray.origin, ray.direction);
-        bool flag= Physics.Raycast(ray, 2, moveoption.LadderMask);
-        Debug.Log($"{flag}");
+        bool flag = Physics2D.Raycast(ray.origin, ray.direction, 2, moveoption.LadderMask);
+        //Debug.Log($"{flag}");
         return flag;
 
     }
@@ -284,7 +343,28 @@ public class Character2DMove : MonoBehaviour
             return;
         }
 
+        if (State.NowJumping && State.ForwardBlocked)
+        {
+            Debug.Log("점프튕김");
+            if(!flag)
+            {
+                Com.rBody.velocity = new Vector2(Com.rBody.velocity.x * -1, Com.rBody.velocity.y);
+                flag = true;
+            }
+            
+        }
+
+        if (State.NowJumping)
+        {
+            return;
+        }
+
         if (State.ForwardBlocked /*&& !State.NowJumping*/)//앞이 막혀 있지만 점프중이 아닐때
+        {
+            return;
+        }
+
+        if(!State.IsGrounded&&!State.OnLadder)
         {
             return;
         }
@@ -292,34 +372,84 @@ public class Character2DMove : MonoBehaviour
         if (!State.IsMove && State.IsGrounded)//움직이지 않을때 경사로에 있을경우 미끄러지는것을 막기 위해
         {
             Com.rBody.velocity = new Vector2(0f, Com.rBody.velocity.y);
+            return;
             //Com.rBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
-        //점프
-        if(State.JumpTrigger)
-        {
-            State.JumpTrigger = false;
 
+        
+        if (!State.IsMove && State.OnLadder)
+        {
+            //Com.rBody.velocity = new Vector2(0f, 0f);
+            Com.rBody.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
+        }
+        else
+        {
+            Com.rBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
+        if (!State.IsMove && !State.OnLadder)
+        {
+            return;
         }
 
 
         //좌우이동
         if (current.GroundDegree > 0 && State.IsGrounded)
         {
-            Com.rBody.velocity = current.Perp * moveoption.Speed * current.InputDirection.x;
+            //Com.rBody.velocity = current.Perp * moveoption.Speed * current.InputDirection.x;
+            current.WorldDirection = current.Perp * moveoption.Speed * current.InputDirection.x;
+            Com.rBody.velocity = current.WorldDirection;
         }
         else
         {
 
-            Com.rBody.velocity = new Vector2(current.InputDirection.x * moveoption.Speed, Com.rBody.velocity.y);
+            //Com.rBody.velocity = new Vector2(current.InputDirection.x * moveoption.Speed, Com.rBody.velocity.y);
+            //current.WorldDirection = new Vector2(current.InputDirection.x * moveoption.Speed, Com.rBody.velocity.y);
+            if (State.OnLadder)
+            {
+                current.WorldDirection = new Vector2(current.InputDirection.x * moveoption.Speed, current.InputDirection.y * moveoption.Speed);
+                Com.rBody.velocity = current.WorldDirection;
+            }
+            else
+            {
+                current.WorldDirection = new Vector2(current.InputDirection.x * moveoption.Speed, Com.rBody.velocity.y);
+                Com.rBody.velocity = current.WorldDirection;
+            }
+            
+
+
             //Com.rBody.velocity = new Vector2(current.InputDirection.x * moveoption.Speed, current.gravity);
         }
+
+
+        //점프
+        //현재 점프 차징값을 이용해서 점프 각도와 세기를 알아내서 점프를 시킨다.
+        //if (State.JumpTrigger)
+        //{
+        //    Debug.Log("점프 시작");
+        //    State.JumpTrigger = false;
+        //    State.NowJumping = true;
+        //    float jumpdegree = moveoption.MinJumpDegree + ((moveoption.MaxJumpDegree - moveoption.MinJumpDegree) * current.CurJumpCharging);
+        //    float jumpforce = moveoption.MinJumpForce + ((moveoption.MaxJumpForce - moveoption.MinJumpForce) * current.CurJumpCharging);
+
+        //    current.CurJumpDegree = jumpdegree;
+        //    float val = (State.IsLeft) ? -1 : 1;
+        //    Vector2 jumpdierction = new Vector2(Mathf.Cos(jumpdegree*Mathf.Deg2Rad ) * val, Mathf.Sin(jumpdegree * Mathf.Deg2Rad));
+
+        //    Com.rBody.AddForce(jumpdierction * jumpforce);
+
+        //    //current.WorldDirection
+
+
+
+        //}
 
     }
 
     //첫번째 점프는 땅에 붙어있을때만 가능
     public void Jump()
     {
-        if(State.IsOutOfControl)
+        if(State.IsOutOfControl||State.NowJumping||State.OnLadder)
         {
             return;
         }
@@ -367,17 +497,41 @@ public class Character2DMove : MonoBehaviour
                 State.IsCharging = false;
                 current.ChargingEndTime = Time.time;
                 float time = current.ChargingEndTime - current.ChargingStartTime;
-                current.CurJumpCharging = Mathf.Floor(time * 100) * 0.01f;
-                if(current.CurJumpCharging >= moveoption.MaxJumpCharge)
+                //current.CurJumpCharging = Mathf.Floor(time * 100) * 0.01f;
+                time = Mathf.Floor(time * 100) * 0.01f;
+                current.CurJumpCharging = time / moveoption.MaxJumpChargeSecond;
+                if(current.CurJumpCharging >= 1.0f)
                 {
-                    current.CurJumpCharging = moveoption.MaxJumpCharge;
+                    current.CurJumpCharging = 1.0f;
                 }
 
                 State.JumpTrigger = true;
 
-                //Debug.Log($"{time}");
-                //Debug.Log($"{power}");
+                Debug.Log($"{time}");
+                Debug.Log($"{current.CurJumpCharging}");
             }
+        }
+
+
+        if (State.JumpTrigger)
+        {
+            Debug.Log("점프 시작");
+            State.JumpTrigger = false;
+            State.NowJumping = true;
+            Com.animator.SetBool("AniJump", true);
+            float jumpdegree = moveoption.MinJumpDegree + ((moveoption.MaxJumpDegree - moveoption.MinJumpDegree) * current.CurJumpCharging);
+            float jumpforce = moveoption.MinJumpForce + ((moveoption.MaxJumpForce - moveoption.MinJumpForce) * current.CurJumpCharging);
+
+            current.CurJumpDegree = jumpdegree;
+            float val = (State.IsLeft) ? -1 : 1;
+            Vector2 jumpdierction = new Vector2(Mathf.Cos(jumpdegree * Mathf.Deg2Rad) * val, Mathf.Sin(jumpdegree * Mathf.Deg2Rad));
+
+            Com.rBody.AddForce(jumpdierction * jumpforce);
+
+            //current.WorldDirection
+
+
+
         }
         //Falling();
     }
@@ -389,15 +543,18 @@ public class Character2DMove : MonoBehaviour
             current.gravity = 0;
 
         }
-        if (State.IsGrounded && State.IsOutOfControl)//outofcontrol상태에서 바닥에 닿으면 해당 상태에서 벋어난다.
+        if (State.IsGrounded && State.IsOutOfControl&& Time.time>=current.KnockbackTime)//outofcontrol상태에서 바닥에 닿으면 해당 상태에서 벋어난다.
         {
             State.IsOutOfControl = false;
+            Com.animator.SetBool("AniOutOfControl", false);
         }
         if(State.IsGrounded&&State.NowJumping)
         {
             if(Com.rBody.velocity.y<0)
             {
                 State.NowJumping = false;
+                Com.animator.SetBool("AniJump", false);
+                flag = false;
                 current.JumpCount = 0;
             }
         }
@@ -405,6 +562,9 @@ public class Character2DMove : MonoBehaviour
         {
 
             //Com.rBody.velocity = new Vector2(Com.rBody.velocity.x, Com.rBody.velocity.y-=)
+            //Physics.gravity.y += 0.02f * moveoption.Gravity;
+
+
             
         }
 
@@ -430,7 +590,7 @@ public class Character2DMove : MonoBehaviour
 
         CheckGround();
         CheckFoward();
-
+        LadderCheck();
         Falling();
         Jump();
         
