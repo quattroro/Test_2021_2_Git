@@ -87,23 +87,30 @@ public class DungeonCrawlerController : Singleton<DungeonCrawlerController>
         int x = Random.Range(0, maxDistance) + (int)(maxDistance / 2);
         int z = Random.Range(0, maxDistance) + (int)(maxDistance / 2);
 
+        //시작방을 정해준다.
         startPoint = new Vector3Int(x, 0, z);
-
+        
+        //시작 방에 싱글방을 하나 만들어 준다.
         posArr[startPoint.z, startPoint.x] = singleRoom(new RoomInfo(), startPoint, "Single");
         posArr[startPoint.z, startPoint.x].weightCnt = 0;
         currRoomCnt++;
 
+        //반복문으로 돌리면서 방들을 만들어 준다.
         while (true)
         {
             if (!(minRoomCnt <= currRoomCnt && currRoomCnt <= maxRoomCnt))
             {
+                //매 반복마다 모든 만들어져 있는 방들을 돌면서 시작지점에서 얼마나 떨어져 있는지 확인한다.
                 countRoomWeight(startPoint, startPoint);
+                //매 반복마다 만들어진 모든 방을 메인 루트에 넣어준다.
                 makeMainRoot();
+                //매 반복마다 메인 루트를 소팅한다.
                 mainRoomSort(mainRoot);
-
+                //메인 루트 중에 하나를 뽑아준다.
                 int Mainrand = Random.Range(0, mainRoot.Count - 1);
-
+                //메인루트에서 랜덤으로 뽑아준 방의 인덱스를 받아와서
                 Vector3Int position = new Vector3Int(mainRoot[Mainrand].currPos.x, 0, mainRoot[Mainrand].currPos.z);
+                //방을 만들어 준다.
                 makeRoomArray(position);
             }
             else
@@ -288,14 +295,18 @@ public class DungeonCrawlerController : Singleton<DungeonCrawlerController>
             RoomController.Instance.LoadRoom(positions[i]);
 
     }
+
+    //전체 배열은 10*10 (maxDistance가 5일때)
     public void makeMainRoot()
     {
+
         mainRoot.Clear();
 
         for (int i = 0; i < (maxDistance * 2); i++)
         {
             for (int j = 0; j < (maxDistance * 2); j++)
             {
+                //모든 배열을 돌면서 방정보가 만들어진 방이면 메인 루트에 넣어준다.
                 if (posArr[j, i].roomState)
                 {
                     mainRoot.Add(posArr[j, i]);
@@ -384,53 +395,73 @@ public class DungeonCrawlerController : Singleton<DungeonCrawlerController>
     // Room Position 생성
     public void makeRoomArray(Vector3Int start)
     {
+        //배열 넘어가는지 검사
         if (start.x >= (maxDistance * 2) || start.z >= (maxDistance * 2))
             return;
-
+        //방 개수 조건 벗어나는지 검사
         if ((minRoomCnt <= currRoomCnt && currRoomCnt <= maxRoomCnt))
             return;
 
         // 사각형 방, 기억자, 니은자, -, |
         double[] persent = { 0.01, 0.03, 0.03, 0.1, 0.1, 0.1, 0.8 };
 
-        // 각 방향 패턴을 List화
+        // 각 방향 패턴을 List화 해당 위치에서 해당 방 모양을 만들기 위한 이동정보
         List<Dictionary<int, List<Vector3Int>>> allPatten
             = new List<Dictionary<int, List<Vector3Int>>> { downPatten, rightPatten, leftPatten, upPatten };
 
-
+        //4방향을 모두 돌면서 작업
         for (int direction = 0; direction < direction4.Count; direction++)
         {
+            //방향을 랜덤으로 뽑는다. 50%확률로 (Random.value=>0.0~1.0 까지 중에서 랜덤으로 뽑는다.)
             bool directionsRand = (Random.value > 0.5f);
 
-            if (directionsRand)
+            if (directionsRand)//50%확률로 실행
             {
-
+                //랜덤으로 방 모양을 정한다.
                 int thisPatten = (int)Choose(persent);
 
+                //뽑힌 패턴이 가능한지 확인, 이미 방이 만들어져 있다던지 할때
                 if (!possiblePatten(start, allPatten[direction][thisPatten]))
                     return;
 
+                //만들어진 방 개수가 범위 안에 있는지 확인
                 if (!roomCountCheck())
                 {
+                    
                     Vector3Int lastMove = start;
+
                     Vector3 currCenterPos = Vector3.zero;
+                    //최대 방향 개수
                     int maxCount = allPatten[direction][thisPatten].Count;
+
+                    //4까지 돌면서
                     for (int i = 0; i < maxCount; i++)
                     {
+                        //방향과 패턴이 정해졌으면 작업을 시작
                         Vector3Int firstPos = allPatten[direction][thisPatten][0];
+                        //마지막위치
                         Vector3Int SecondPos = allPatten[direction][thisPatten][maxCount - 1];
+                        //중심위치 
                         currCenterPos = new Vector3((float)(firstPos.x + SecondPos.x) / 2, 0, (float)(firstPos.z + SecondPos.z) / 2);
+
+                        //움직임 
                         Vector3Int move = start + allPatten[direction][thisPatten][i];
 
+                        //해당 방의 정보들을 넣어준다.
                         posArr[move.z, move.x].roomState = true;
+                        //이름
                         posArr[move.z, move.x].roomName = "Single";
+                        //현재 위치
                         posArr[move.z, move.x].currPos = start + allPatten[direction][thisPatten][i];
+                        //거리
                         posArr[move.z, move.x].weightCnt = -1;
+
                         lastMove = move;
 
                         switch (allPatten[direction][thisPatten].Count)
                         {
                             case 2:
+                                //해당 방의 패턴에따라 부모를 설정하고 중심좌표를 설정한다.
                                 posArr[move.z, move.x].roomType = "Double";
                                 posArr[move.z, move.x].parentPos = start + allPatten[direction][thisPatten][0];
                                 posArr[move.z, move.x].CenterPos = start + currCenterPos;
