@@ -345,7 +345,7 @@ public class Character2DMove : MonoBehaviour
 
         if (State.NowJumping && State.ForwardBlocked)
         {
-            Debug.Log("Á¡ÇÁÆ¨±è");
+            //Debug.Log("Á¡ÇÁÆ¨±è");
             if(!flag)
             {
                 Com.rBody.velocity = new Vector2(Com.rBody.velocity.x * -1, Com.rBody.velocity.y);
