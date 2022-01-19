@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MapSpawner : MonoBehaviour
 {
+    public int[] maparr;
+    public int listsize;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
