@@ -20,4 +20,6 @@ public class RoomInfo
     // 시작 방에서 부터 해당 방까지의 거리
     public int weightCnt;
 
+
+
 }

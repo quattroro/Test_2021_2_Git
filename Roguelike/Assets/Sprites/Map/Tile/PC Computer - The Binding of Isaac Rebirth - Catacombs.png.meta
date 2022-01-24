@@ -1,7 +1,49 @@
 fileFormatVersion: 2
 guid: 2eb2b2c430072c04db43c0aa7899e69f
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6875772110964615638
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_0
+  - first:
+      213: -8102765524687382795
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_1
+  - first:
+      213: -2509898882113815816
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_2
+  - first:
+      213: 4239606636299679005
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_3
+  - first:
+      213: -2657731666996945123
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_4
+  - first:
+      213: 7556088164395710715
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_5
+  - first:
+      213: -4500989283458093586
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_6
+  - first:
+      213: -3068538452571318703
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_7
+  - first:
+      213: 1815423841875593411
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_8
+  - first:
+      213: -4021532499930173412
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_9
+  - first:
+      213: 1121505462550826588
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_10
+  - first:
+      213: -6464169171107125744
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_11
+  - first:
+      213: 2505477598643913283
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_12
+  - first:
+      213: -3362330463045141176
+    second: PC Computer - The Binding of Isaac Rebirth - Catacombs_13
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -32,7 +74,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -41,12 +83,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 52
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -75,9 +117,315 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_0
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 0
+        width: 182
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d965963e46ab6f50800000000000000
+      internalID: 6875772110964615638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 416
+        width: 234
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f61ab28fa13d8f80800000000000000
+      internalID: -8102765524687382795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 312
+        width: 52
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fab475c34c0b2dd0800000000000000
+      internalID: -2509898882113815816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_3
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 0
+        width: 182
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d15f708f5cb16da30800000000000000
+      internalID: 4239606636299679005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_4
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 364
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1f17505127dd1bd0800000000000000
+      internalID: -2657731666996945123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_5
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 416
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf8f652d62e9cd860800000000000000
+      internalID: 7556088164395710715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_6
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 163
+        width: 130
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eede3ad08164981c0800000000000000
+      internalID: -4500989283458093586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_7
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 163
+        width: 130
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1561cd2098c5a65d0800000000000000
+      internalID: -3068538452571318703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_8
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 85
+        width: 338
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c805cb9d5ea13910800000000000000
+      internalID: 1815423841875593411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_9
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 7
+        width: 338
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1039f09f75a038c0800000000000000
+      internalID: -4021532499930173412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_10
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 188
+        width: 676
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5e8005b643609f00800000000000000
+      internalID: 1121505462550826588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_11
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 6
+        width: 676
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 016e0243368aa46a0800000000000000
+      internalID: -6464169171107125744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_12
+      rect:
+        serializedVersion: 2
+        x: 1554
+        y: 188
+        width: 338
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3428ed3f99e35c220800000000000000
+      internalID: 2505477598643913283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PC Computer - The Binding of Isaac Rebirth - Catacombs_13
+      rect:
+        serializedVersion: 2
+        x: 1554
+        y: 6
+        width: 338
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84d38bc124a9651d0800000000000000
+      internalID: -3362330463045141176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

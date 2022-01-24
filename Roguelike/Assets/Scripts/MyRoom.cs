@@ -7,6 +7,9 @@ public class MyRoom : MonoBehaviour
     public enum RoomType { Single, Double, Triple, Quad };
     public GameObject RoomPrefab;
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {

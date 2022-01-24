@@ -8,26 +8,26 @@ public class CharacterStatus : ScriptableObject
     public enum Characters { Isaac, Cain, Mangdalene, Eve, Samson, Lazarus, Azazel, CMax };
 
     [SerializeField]
-    private string myname;
+    public string myname;
     [SerializeField]
-    private Characters type;
+    public Characters type;
     [SerializeField]
-    private int MaxHP;
+    public int MaxHP;
     [SerializeField]
-    private int CurHP;
+    public int CurHP;
     [SerializeField]
-    private int SoulHeart;
+    public int SoulHeart;
     [SerializeField]
-    private float Damage;
+    public float Damage;
     [SerializeField]
-    private float MoveSpeed;
+    public float MoveSpeed;
     [SerializeField]
-    private float AttackSpeed;
+    public float AttackSpeed;
     [SerializeField]
-    private float ShootSpeed;
+    public float ShootSpeed;
     [SerializeField]
-    private float ShootRange;
+    public float ShootRange;
     [SerializeField]
-    private bool UnLock;
+    public bool UnLock;
 
 }

@@ -6,16 +6,32 @@ using UnityEngine;
 //램덤으로 방 프리셋을 뽑아서 방들을 병합한다.
 //
 
-public class MapSpawner : MonoBehaviour
+public class MapSpawner : Singleton<MapSpawner>
 {
-    public RoomInfo[] maparr;
+    public RoomInfo[] Roomarr;
     public int listsize;
+
+
+    public List<Vector3Int> direction4 = new List<Vector3Int>
+    {
+        new Vector3Int( 0, 1,  0),       // down
+        new Vector3Int( 1, 0,  0),       // right
+        new Vector3Int(-1, 0,  0),       // left
+        new Vector3Int( 0, -1, 0)        // up
+    };
+
+
 
     public void Initsetting()
     {
-        maparr = new RoomInfo[listsize * listsize];
+        Roomarr = new RoomInfo[listsize * listsize];
 
 
+
+    }
+
+    public void RoomClear(RoomInfo room)
+    {
 
     }
 
