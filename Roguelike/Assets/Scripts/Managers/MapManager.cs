@@ -25,13 +25,15 @@ public class MapManager : Singleton<MapManager>
         public float ShopRoomVal;
         public int MaxShopRoom;
 
+        [Range(1, 20)]
         public int MaxRoomNum;
+        [Range(1, 20)]
         public int MinRoomNum;
 
         public int MaxBossRoom;
     }
 
-
+    public CurrentStats stats;
 
     public GameObject LoadRoom(RoomType type, RoomSize size)
     {
