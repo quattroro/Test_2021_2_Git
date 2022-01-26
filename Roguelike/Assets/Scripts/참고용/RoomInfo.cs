@@ -5,9 +5,13 @@ using UnityEngine;
 [SerializeField]
 public class RoomInfo
 {
+    public enum RoomSize { Single, Double_Vir, Double_Hor, Triple_1, Triple_2, Triple_3, Triple_4, Quard, SizeMax };
+
     public string roomID;
     public string roomName;
     public string roomType;
+
+    public RoomSize size;
 
     // 현재 방의 위치
     public Vector3Int currPos;

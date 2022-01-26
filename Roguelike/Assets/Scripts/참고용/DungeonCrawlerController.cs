@@ -434,7 +434,7 @@ public class DungeonCrawlerController : Singleton<DungeonCrawlerController>
                     //최대 방향 개수
                     int maxCount = allPatten[direction][thisPatten].Count;
 
-                    //4까지 돌면서
+                    //패턴의 크기만큼 돌면서
                     for (int i = 0; i < maxCount; i++)
                     {
                         //방향과 패턴이 정해졌으면 작업을 시작
