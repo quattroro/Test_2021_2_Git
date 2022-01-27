@@ -129,7 +129,7 @@ public class MapSpawner : Singleton<MapSpawner>
         Initsetting();
         CreateRoomInfo(listsize / 2, listsize / 2);
         MargeRoom();
-
+        CreateRoomArr();
 
     }
 
@@ -144,31 +144,58 @@ public class MapSpawner : Singleton<MapSpawner>
                 if(current.Roomarr[x + (y * listsize)] != null&& current.Roomarr[x + (y * listsize)].roomState)
                 {
                     //방 타입에 따라 방을 만들어 준다. 실제 방 스트립트에서 부모가 존재하면 병합된 방향으로의 문은 만들지 않는다.
+                    //방이 이미 만들어 지지 않았으면 
                     if (current.Roomarr[x + (y * listsize)].roomType == "Single")
                     {
-                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
-                        ExistMap.Add(new Vector3Int(x, y, 0));
+                        if (!ExistMap.Contains(new Vector3Int(x, y, 0)))
+                        {
+                            GameObject prefabobj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
+                            current.MapObjList[x + (y * listsize)] = GameObject.Instantiate(prefabobj);
+                            current.MapObjList[x + (y * listsize)].transform.position = this.transform.position + new Vector3(x * 30, y * 30, 0);
+                            ExistMap.Add(new Vector3Int(x, y, 0));
+                        }
                     }
-                    else if (current.Roomarr[x + (y * listsize)].roomType == "Double_Hor")
+                    else
                     {
-                        
-                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Double_Hor);
-                        ExistMap.Add(new Vector3Int(x, y, 0));
-                        //GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.);
+                        Vector3Int parent = current.Roomarr[x + (y * listsize)].parentPos;
+                        if (!ExistMap.Contains(new Vector3Int(parent.x, parent.y, 0)))
+                        {
+                            MapManager.RoomSize size = StringToEnum(current.Roomarr[x + (y * listsize)].roomType);
+
+                            GameObject prefabobj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, size);
+                            current.MapObjList[parent.x + (parent.y * listsize)] = GameObject.Instantiate(prefabobj);
+                            current.MapObjList[x + (y * listsize)].transform.position = this.transform.position + new Vector3(x * 30, y * 30, 0);
+                            ExistMap.Add(new Vector3Int(parent.x, parent.y, 0));
+                        }
                     }
+
+
+                    //else if (current.Roomarr[x + (y * listsize)].roomType == "Double_Hor")
+                    //{
+                    //    //MapManager.RoomSize size = current.Roomarr[x + (y * listsize)].roomType.ToString().ToEnum<MapManager.RoomSize>;
+
+                    //    MapManager.RoomSize size = StringToEnum(current.Roomarr[x + (y * listsize)].roomType);
+                    //    GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, size);
+                    //    ExistMap.Add(new Vector3Int(x, y, 0));
+                    //    //GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.);
+                    //}
+
+                    //else if (current.Roomarr[x + (y * listsize)].roomType == "Triple")
+                    //{
+                    //    MapManager.RoomSize size = StringToEnum(current.Roomarr[x + (y * listsize)].roomType);
+                    //    GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, size);
+                    //    ExistMap.Add(new Vector3Int(x, y, 0));
+                    //    //GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
+                    //}
+                    //else if (current.Roomarr[x + (y * listsize)].roomType == "Quard")
+                    //{
+                    //    MapManager.RoomSize size = StringToEnum(current.Roomarr[x + (y * listsize)].roomType);
+                    //    GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, size);
+                    //    ExistMap.Add(new Vector3Int(x, y, 0));
+                    //}
+
+                    //
                     
-                    else if (current.Roomarr[x + (y * listsize)].roomType == "Triple")
-                    {
-                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
-                    }
-                    else if (current.Roomarr[x + (y * listsize)].roomType == "Quard")
-                    {
-                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
-                    }
-
-
-
-
                 }
 
 
@@ -176,6 +203,12 @@ public class MapSpawner : Singleton<MapSpawner>
         }
 
     }
+
+    MapManager.RoomSize StringToEnum(string str)
+    {
+        return (MapManager.RoomSize)Enum.Parse(typeof(MapManager.RoomSize), str);
+    }
+
 
     public void ShowRoom()
     {
@@ -480,7 +513,7 @@ public class MapSpawner : Singleton<MapSpawner>
         //해당 위치가 비어있으면 방정보를 만들어 준다.
         if (current.Roomarr[x + (y * listsize)] == null)
         {
-            Debug.Log($"{current.NowCount}번방 {x},{y} 생성");
+            //Debug.Log($"{current.NowCount}번방 {x},{y} 생성");
             current.Roomarr[x + (y * listsize)] = GetNewRoomInfo(nowpos, current.NowCount);
             current.NowCount++;
         }

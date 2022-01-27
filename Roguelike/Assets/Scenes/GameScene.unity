@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 243304510}
   - component: {fileID: 243304509}
   m_Layer: 0
-  m_Name: RoomSampley
+  m_Name: RoomSample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,89 +288,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &475455633
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 475455635}
-  - component: {fileID: 475455634}
-  m_Layer: 0
-  m_Name: PC Computer - The Binding of Isaac Rebirth - Cellar_11
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!212 &475455634
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475455633}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -4037963082217121365, guid: 089f74833de13f94298b0bf2a390884b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 6.5, y: 1.5}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!4 &475455635
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475455633}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -89.65, y: 23.88, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -538,7 +455,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &824681807
 GameObject:
@@ -651,6 +568,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Triple_2_2
       objectReference: {fileID: 0}
+    - target: {fileID: 8826637194940698835, guid: 5fd15a33a324a4544a12b61b261a3b99, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fd15a33a324a4544a12b61b261a3b99, type: 3}
 --- !u!1001 &1260350690
@@ -731,6 +652,10 @@ PrefabInstance:
     - target: {fileID: 3988170118707811451, guid: 902af692cd020e34f9c41f93f4932142, type: 3}
       propertyPath: m_Name
       value: Room_Triple_3_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3988170118707811451, guid: 902af692cd020e34f9c41f93f4932142, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 902af692cd020e34f9c41f93f4932142, type: 3}
@@ -930,91 +855,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Triple_4_2
       objectReference: {fileID: 0}
+    - target: {fileID: 7451419822686111485, guid: 10159d441a7803e4cb7370f9befc059a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10159d441a7803e4cb7370f9befc059a, type: 3}
---- !u!1 &1904529051
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1904529053}
-  - component: {fileID: 1904529052}
-  m_Layer: 0
-  m_Name: PC Computer - The Binding of Isaac Rebirth - Cellar_14
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!212 &1904529052
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1904529051}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -8666269877597149988, guid: 089f74833de13f94298b0bf2a390884b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 6.5, y: 3.4807692}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!4 &1904529053
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1904529051}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -84.14058, y: 32.49765, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133115545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +946,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Single
       objectReference: {fileID: 0}
+    - target: {fileID: 620343433150784243, guid: 881300e54dd4d4e4d9371bd2285d3d21, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 881300e54dd4d4e4d9371bd2285d3d21, type: 3}
 --- !u!1001 &2349309341395319971
@@ -1157,6 +1007,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Quard
       objectReference: {fileID: 0}
+    - target: {fileID: 2349309341676139165, guid: fc60f388c8652074eab40779cdfdc548, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc60f388c8652074eab40779cdfdc548, type: 3}
 --- !u!1001 &2566086623824593459
@@ -1213,6 +1067,10 @@ PrefabInstance:
     - target: {fileID: 5146081809608869531, guid: 76de3313868b38a4a843d22f87fa35cf, type: 3}
       propertyPath: m_Name
       value: Room_Triple_1_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5146081809608869531, guid: 76de3313868b38a4a843d22f87fa35cf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5146081811170137050, guid: 76de3313868b38a4a843d22f87fa35cf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1275,6 +1133,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Triple_3_1
       objectReference: {fileID: 0}
+    - target: {fileID: 3988170118707811451, guid: 902af692cd020e34f9c41f93f4932142, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 902af692cd020e34f9c41f93f4932142, type: 3}
 --- !u!1001 &5939059879792987515
@@ -1287,6 +1149,10 @@ PrefabInstance:
     - target: {fileID: 5939059881003908312, guid: 1b8293103bace8e4392c4e31d0736b8b, type: 3}
       propertyPath: m_Name
       value: Room_Double_Hor
+      objectReference: {fileID: 0}
+    - target: {fileID: 5939059881003908312, guid: 1b8293103bace8e4392c4e31d0736b8b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5939059881003908319, guid: 1b8293103bace8e4392c4e31d0736b8b, type: 3}
       propertyPath: m_RootOrder
@@ -1344,6 +1210,10 @@ PrefabInstance:
     - target: {fileID: 6253816825367537684, guid: f0cb262a70d2aa9449ac9d74d9f7f887, type: 3}
       propertyPath: m_Name
       value: Room_Double_Vir
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253816825367537684, guid: f0cb262a70d2aa9449ac9d74d9f7f887, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6253816825367537685, guid: f0cb262a70d2aa9449ac9d74d9f7f887, type: 3}
       propertyPath: m_RootOrder
@@ -1446,6 +1316,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Triple_1_1
       objectReference: {fileID: 0}
+    - target: {fileID: 7275033120760696977, guid: 55ce542254ec8c24d92293a5f0e58f07, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55ce542254ec8c24d92293a5f0e58f07, type: 3}
 --- !u!1001 &7451419820814074550
@@ -1503,6 +1377,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room_Triple_4_1
       objectReference: {fileID: 0}
+    - target: {fileID: 7451419822686111485, guid: 10159d441a7803e4cb7370f9befc059a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10159d441a7803e4cb7370f9befc059a, type: 3}
 --- !u!1001 &8826637195321229849
@@ -1559,6 +1437,10 @@ PrefabInstance:
     - target: {fileID: 8826637194940698835, guid: 5fd15a33a324a4544a12b61b261a3b99, type: 3}
       propertyPath: m_Name
       value: Room_Triple_2_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826637194940698835, guid: 5fd15a33a324a4544a12b61b261a3b99, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fd15a33a324a4544a12b61b261a3b99, type: 3}
