@@ -8,7 +8,7 @@ public class MyRoom : MonoBehaviour
     public GameObject RoomPrefab;
 
 
-
+    public LinkedData linkeddata;
 
     // Start is called before the first frame update
     void Start()

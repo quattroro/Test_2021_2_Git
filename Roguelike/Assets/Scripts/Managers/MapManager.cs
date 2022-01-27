@@ -9,7 +9,7 @@ public class MapManager : Singleton<MapManager>
 
     public enum RoomType { Nomal, Boss, Trap, Shop, Treasure, Devil, RoomTypeMax};
 
-    public enum RoomSize { Single, Double_Vir, Double_Hor, Triple_1, Triple_2, Triple_3, Triple_4, Quard, SizeMax };
+    public enum RoomSize { Single, Double_Vir, Double_Hor, Triple_1_1, Triple_1_2, Triple_2_1, Triple_2_2, Triple_3_1, Triple_3_2, Triple_4_1, Triple_4_2, Quard, SizeMax };
 
     public Floors NowFloor;
 
@@ -37,8 +37,15 @@ public class MapManager : Singleton<MapManager>
 
     public GameObject LoadRoom(RoomType type, RoomSize size)
     {
-        GameObject temp = new GameObject();
-
+        GameObject temp = null;
+        if (type==RoomType.Nomal)
+        {
+            temp = (GameObject)Resources.Load($"Prefabs/MapPrefabs/{NowFloor.ToString()}/{type.ToString()}/Room_{size.ToString()}");
+        }
+        else
+        {
+            temp = (GameObject)Resources.Load($"Prefabs/MapPrefabs/{NowFloor.ToString()}/{type.ToString()}");
+        }
         return temp;
     }
 

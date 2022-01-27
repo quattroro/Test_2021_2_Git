@@ -1722,7 +1722,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8826637194940698834}
   m_Layer: 0
-  m_Name: Room_Triple_2
+  m_Name: Room_Triple_2_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -28,7 +28,9 @@ public class MapSpawner : Singleton<MapSpawner>
         public GameObject[] MapObjList;
     }
     public CurrentValue current;
+    public List<Vector3Int> ExistMap;
 
+    public enum Direction { Right, Left, Down, Up };
     public List<Vector3Int> direction4 = new List<Vector3Int>
     {
         new Vector3Int( 1, 0,  0),       // right
@@ -82,8 +84,8 @@ public class MapSpawner : Singleton<MapSpawner>
     public Dictionary<int, List<Vector3Int>> downPatten = new Dictionary<int, List<Vector3Int>>
     {
         {  0, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(-1, 0, 0),   new Vector3Int(0, 1, 0),   new Vector3Int(-1, 1, 0) } }, // ㅁ
-        {  1, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(0, 1, 0),    new Vector3Int(-1, 1, 0)    } }, // ┓
-        {  2, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(0, 1, 0),    new Vector3Int(1, 1, 0)     } }, // ┏
+        {  1, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(0, 1, 0),    new Vector3Int(1, 1, 0)    } }, // ┓ └ 
+        {  2, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(0, 1, 0),    new Vector3Int(-1, 1, 0)     } }, // ┏  ┛ 
         {  3, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(0, 1, 0)                                 } }, // 아래 |
        // {  4, new List<Vector3Int>      { new Vector3Int(0, 1, 0),   new Vector3Int(-1, 1, 0)                                } }, // 아래 |
         //{  5, new List<Vector3Int>      { new Vector3Int(0, 1, 0),   new Vector3Int(1, 1, 0)                                 } }, // 아래 |
@@ -102,8 +104,8 @@ public class MapSpawner : Singleton<MapSpawner>
     public Dictionary<int, List<Vector3Int>> leftPatten = new Dictionary<int, List<Vector3Int>>
     {
         {  0, new List<Vector3Int>      { new Vector3Int(0, 0, 0),  new Vector3Int(-1, 0, 0),   new Vector3Int(-1, -1, 0),  new Vector3Int(0, -1, 0) } }, // ㅁ
-        {  1, new List<Vector3Int>      { new Vector3Int(0, 0, 0),  new Vector3Int(-1, 0, 0),   new Vector3Int(-1, -1, 0)   } }, // └ 
-        {  2, new List<Vector3Int>      { new Vector3Int(0, 0, 0),  new Vector3Int(-1, 0, 0),   new Vector3Int(-1, 1, 0)    } }, // ┌
+        {  1, new List<Vector3Int>      { new Vector3Int(0, 0, 0),  new Vector3Int(-1, 0, 0),   new Vector3Int(-1, -1, 0)   } }, // ㄴ
+        {  2, new List<Vector3Int>      { new Vector3Int(0, 0, 0),  new Vector3Int(-1, 0, 0),   new Vector3Int(-1, 1, 0)    } }, // 
         {  3, new List<Vector3Int>      { new Vector3Int(0, 0, 0),  new Vector3Int(-1, 0, 0)                                } }, // 왼쪽  --
        // {  4, new List<Vector3Int>      { new Vector3Int(-1, 0, 0),  new Vector3Int(-1, -1, 0)                               } }, // 왼쪽  --
         //{  5, new List<Vector3Int>      { new Vector3Int(-1, 0, 0),  new Vector3Int(-1, 1, 0)                                } }, // 왼쪽  --
@@ -113,7 +115,7 @@ public class MapSpawner : Singleton<MapSpawner>
     {
         {  0, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(1, 0, 0),    new Vector3Int(1, 1, 0) ,   new Vector3Int(0, 1, 0) } }, // ㅁ
         {  1, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(1, 0, 0),    new Vector3Int(1, 1, 0)     } }, // ┐
-        {  2, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(1, 0, 0),    new Vector3Int(1, -1, 0)    } }, // ┛ 
+        {  2, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(1, 0, 0),    new Vector3Int(1, -1, 0)    } }, // 
         {  3, new List<Vector3Int>      { new Vector3Int(0, 0, 0),   new Vector3Int(1, 0, 0)                                 } }, // 오른쪽  --
         //{  4, new List<Vector3Int>      { new Vector3Int(1, 0, 0),   new Vector3Int(1, 1, 0)                                 } }, // 오른쪽  --
         //{  5, new List<Vector3Int>      { new Vector3Int(1, 0, 0),   new Vector3Int(1, -1, 0)                                } }, // 오른쪽  --
@@ -133,11 +135,124 @@ public class MapSpawner : Singleton<MapSpawner>
 
     public void CreateRoomArr()
     {
+        int count = 0;
+        for(int y=0;y<listsize;y++)
+        {
+            for(int x=0;x<listsize;x++)
+            {
+                //방정보배열이 완전히 세팅이 끝난 위치에 방을 만들어 준다.
+                if(current.Roomarr[x + (y * listsize)] != null&& current.Roomarr[x + (y * listsize)].roomState)
+                {
+                    //방 타입에 따라 방을 만들어 준다. 실제 방 스트립트에서 부모가 존재하면 병합된 방향으로의 문은 만들지 않는다.
+                    if (current.Roomarr[x + (y * listsize)].roomType == "Single")
+                    {
+                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
+                        ExistMap.Add(new Vector3Int(x, y, 0));
+                    }
+                    else if (current.Roomarr[x + (y * listsize)].roomType == "Double_Hor")
+                    {
+                        
+                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Double_Hor);
+                        ExistMap.Add(new Vector3Int(x, y, 0));
+                        //GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.);
+                    }
+                    
+                    else if (current.Roomarr[x + (y * listsize)].roomType == "Triple")
+                    {
+                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
+                    }
+                    else if (current.Roomarr[x + (y * listsize)].roomType == "Quard")
+                    {
+                        GameObject obj = MapManager.Instance.LoadRoom(MapManager.RoomType.Nomal, MapManager.RoomSize.Single);
+                    }
 
 
 
 
+                }
 
+
+            }
+        }
+
+    }
+
+    public void ShowRoom()
+    {
+
+    }
+
+    //주변에 있는 방들을 찾아서 연결정보를 넘겨준다.
+    public LinkedData GetLinkedData(int x, int y)
+    {
+        LinkedData link = new LinkedData();
+        Vector3Int nowpos = new Vector3Int(x, y, 0);
+
+        //right
+        Vector3Int next = nowpos + direction4[(int)Direction.Right];
+        if (current.MapObjList[next.x + (next.y * listsize)] != null)
+        {
+            link.RightRoom = current.MapObjList[next.x + (next.y * listsize)];
+            //해당 위치에 존재하는 방에 링크정보가 이미 세팅 되어있으면 해당 방의 링크정보를 수정
+            if (current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata != null)
+            {
+                current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata.LeftRoom = current.MapObjList[nowpos.x + (nowpos.y * listsize)];
+            }
+        }
+
+        //left
+        next = nowpos + direction4[(int)Direction.Left];
+        if (current.MapObjList[next.x + (next.y * listsize)] != null)
+        {
+            link.LeftRoom = current.MapObjList[next.x + (next.y * listsize)];
+            //해당 위치에 존재하는 방에 링크정보가 이미 세팅 되어있으면 해당 방의 링크정보를 수정
+            if (current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata != null)
+            {
+                current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata.RightRoom = current.MapObjList[nowpos.x + (nowpos.y * listsize)];
+            }
+        }
+
+        //up
+        next = nowpos + direction4[(int)Direction.Up];
+        if (current.MapObjList[next.x + (next.y * listsize)] != null)
+        {
+            link.UpRoom = current.MapObjList[next.x + (next.y * listsize)];
+            //해당 위치에 존재하는 방에 링크정보가 이미 세팅 되어있으면 해당 방의 링크정보를 수정
+            if (current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata != null)
+            {
+                current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata.DownRoom = current.MapObjList[nowpos.x + (nowpos.y * listsize)];
+            }
+        }
+
+        //down
+        next = nowpos + direction4[(int)Direction.Down];
+        if (current.MapObjList[next.x + (next.y * listsize)] != null)
+        {
+            link.DownRoom = current.MapObjList[next.x + (next.y * listsize)];
+            //해당 위치에 존재하는 방에 링크정보가 이미 세팅 되어있으면 해당 방의 링크정보를 수정
+            if (current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata != null)
+            {
+                current.MapObjList[next.x + (next.y * listsize)].GetComponentInChildren<MyRoom>().linkeddata.UpRoom = current.MapObjList[nowpos.x + (nowpos.y * listsize)];
+            }
+        }
+
+        return link;
+    }
+
+
+    //주변에 존재하는 방의 개수를 넘겨준다.
+    public int RoomCount(int x,int y)
+    {
+        Vector3Int pos = new Vector3Int(x, y, 0);
+        Vector3Int temp;
+        int count = 0;
+        for (int i = 0; i < direction4.Count; i++)
+        {
+            temp = pos + direction4[i];
+            if (current.Roomarr[temp.x + (temp.y * listsize)] != null)
+                count++;
+        }
+        return count;
     }
 
 
@@ -178,16 +293,72 @@ public class MapSpawner : Singleton<MapSpawner>
 
                                 case 2:
                                     Debug.Log($"{next.x},{next.y}번방 더블룸으로 변경");
+                                    if (direction == (int)Direction.Right || direction == (int)Direction.Left)
+                                    {
+                                        current.Roomarr[next.x + (next.y * listsize)].roomType = "Double_Hor";
+                                    }
+                                    else
+                                    {
+                                        current.Roomarr[next.x + (next.y * listsize)].roomType = "Double_Vir";
+                                    }
                                     current.Roomarr[next.x + (next.y * listsize)].roomState = true;
-                                    current.Roomarr[next.x + (next.y * listsize)].roomType = "Double";
+                                    
                                     current.Roomarr[next.x + (next.y * listsize)].CenterPos = next;
                                     current.Roomarr[next.x + (next.y * listsize)].parentPos = start + move[direction][pattern][0];
                                     break;
 
                                 case 3:
                                     Debug.Log($"{next.x},{next.y}번방 Triple룸으로 변경");
+
                                     current.Roomarr[next.x + (next.y * listsize)].roomState = true;
-                                    current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple";
+                                    if(direction == (int)Direction.Right)
+                                    {
+                                        if (pattern == 1)
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_3_2";
+                                        }
+                                        else
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_3_1";
+                                        }
+                                    }
+
+                                    if (direction == (int)Direction.Left)
+                                    {
+                                        if (pattern == 1)
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_1_1";
+                                        }
+                                        else
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_1_2";
+                                        }
+                                    }
+
+                                    if (direction == (int)Direction.Up)
+                                    {
+                                        if (pattern == 1)
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_2_2";
+                                        }
+                                        else
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_2_1";
+                                        }
+                                    }
+
+                                    if (direction == (int)Direction.Down)
+                                    {
+                                        if (pattern == 1)
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_4_1";
+                                        }
+                                        else
+                                        {
+                                            current.Roomarr[next.x + (next.y * listsize)].roomType = "Triple_4_2";
+                                        }
+                                    }
+                                    
                                     current.Roomarr[next.x + (next.y * listsize)].CenterPos = next;
                                     current.Roomarr[next.x + (next.y * listsize)].parentPos = start + move[direction][pattern][0];
 
@@ -283,10 +454,13 @@ public class MapSpawner : Singleton<MapSpawner>
         
         stats = MapManager.Instance.stats;
         current.Roomarr = new RoomInfo[listsize * listsize];
+        current.MapObjList = new GameObject[listsize * listsize];
+
 
         for(int i=0;i<listsize*listsize;i++)
         {
             current.Roomarr[i] = null;
+            current.MapObjList[i] = null;
         }
 
     }
